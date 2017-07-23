@@ -1,0 +1,22 @@
+.mainHeadDiv{
+	font-family:Arial;
+	font-size:40;
+	color:darkblue;
+	width:100%;
+	height:90px;
+	display:flex;
+	align-items:center;
+}
+.mainFormDiv{
+	display:flex;
+	flex-direction:column;
+	padding-left:20px;
+}
+
+.mainFormInputDiv{
+	display:flex;
+	flex-direction:column;
+	font-family:Arial;
+	font-size:20;
+	margin-bottom:10px;
+}

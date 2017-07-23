@@ -1,0 +1,74 @@
+<html>
+	<head>
+		{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/baseTempCss.css' %}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	</head>
+	
+	<body>
+		<div class="navBar">
+			<a href="" class="navItem">
+				View Posts
+			</a>
+			<a href="" class="navItem">
+				Sign-in
+			</a>
+			<a href="" class="navItem">
+				Sign-up
+			</a>
+		</div>
+	
+		<div style="width: 100%;height:60px; background-color:white;"></div>
+	
+		<div class="main">
+			<div class="searchDiv">
+				<form style="margin-bottom:0;">
+					Search: 
+					<input style="width:400px;height:32px;" type="text" name="search">
+					<input type="submit">
+				</form>
+				<form style="margin-bottom:0;margin-left:20px;">
+					Items: 
+					<select style="width:70px;height:32px;">
+					  <option value="10">10</option>
+					  <option value="15">15</option>
+					  <option value="20">20</option>
+					</select>
+				</form>
+			</div>
+			<div class="mainDiv">
+				<div style="width: 100%;height:60px; background-color:white;"></div>
+				<div class="reultsDiv">
+					<ul class="resultsList">
+						{% for item in item_list %}
+						<li>
+							<div class="itemCard">
+								<div class="itemCardImg">
+									<img src="{{ item.item_img.url }}" style="width:100%;height:200px;">
+								</div>
+								<div class="itemCardName">
+									<a href="" style="text-decoration: none; color:white;">{{item.item_name}}</a>
+								</div>
+								<div class="itemCardDet">
+									<div class="itemCardDetUser">
+										From: <a href="" class="itemDetlinks">{{item.item_userfk.user_username}}</a>
+									</div>
+									<div class="itemCardDetTags">
+										Tags: 
+										{% for tag in item.tag_set.all %}
+											<a href="" class="itemDetlinks">{{tag.tag_word}}</a>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="seeMoreDiv">
+					<a href="">See More</a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
