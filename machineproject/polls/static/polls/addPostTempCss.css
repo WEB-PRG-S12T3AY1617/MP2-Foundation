@@ -1,0 +1,14 @@
+.listTagsDiv{
+	display:flex;
+	flex-direction:column;
+}
+
+.occupationDiv{
+	display:flex;
+	flex-direction:row;
+	align-items:center;
+	justify-content:center;
+	font-size:15;
+	margin-top:10px;
+	height:30px;
+}

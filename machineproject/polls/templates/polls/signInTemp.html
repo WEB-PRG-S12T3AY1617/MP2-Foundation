@@ -1,0 +1,47 @@
+<html>
+	<head>
+		{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'polls/baseTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'polls/formTempCss.css' %}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	</head>
+	
+	<body>
+		<div class="navBar">
+			<a href="" class="navItem">
+				View Posts
+			</a>
+			<a href="polls/signInTemp.html" class="navItem">
+				Sign-in
+			</a>
+			<a href="polls/signUpTemp.html" class="navItem">
+				Sign-up
+			</a>
+		</div>
+	
+		<div style="width: 100%;height:60px; background-color:white;"></div>
+	
+		<div class="main">
+			<div class="mainDiv" style="margin-top:30px;width:500px;align-items:center;">
+				<div class="mainHeadDiv">
+					Sign-in
+				</div>
+				<div class="mainFormDiv">
+					<form>
+						<div class="mainFormInputDiv">
+							Userame:
+							<input style="width:450px;height:32px;" type="text" name="name" id = "username">
+						</div>
+						<div class="mainFormInputDiv">
+							Password:
+							<input style="width:450px;height:32px;font-size:15;padding-left:5px;" type="password" name="name" id = "password">
+						</div>
+						<div class="mainFormInputDiv" style="width:100%;align-items:center;">
+							<input style="width:100px;height:32px;font-size:15;padding-left:5px;" type="submit" name="name">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

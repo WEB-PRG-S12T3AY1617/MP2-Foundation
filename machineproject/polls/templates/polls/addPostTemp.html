@@ -1,0 +1,90 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="baseTempCss.css">
+		<link rel="stylesheet" type="text/css" href="formTempCss.css">
+		<link rel="stylesheet" type="text/css" href="addPostTempCss.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		
+		<script>
+			$(document).ready(function(){
+				$('#addTag').click(function(){
+					$('.listTagsDiv').append('<input style="width:200px;height:32px;" type="text" name="name">');
+				});
+				$('#acadRB').change(function() {
+					if ($("#acadRB").prop("checked", true)) {
+						console.log("yay");
+						$('.occupationDiv').append('<div class="courseSelect">Course:<select name="rating" style="height:30px;margin:0;"><option value="0">CS-CSE</option><option value="1">CS-NE</option></select></div>')
+					}
+				});
+				$('#officeRB').change(function() {
+					if ($("#officeRB").prop("checked", true)) {
+						$('.courseSelect').remove();
+					}
+				});
+			});
+		</script>
+	</head>
+	
+	<body>
+		<div class="navBar">
+			<a href="" class="navItem">
+				View Posts
+			</a>
+			<a href="" class="navItem">
+				Add Posts
+			</a>
+			<a href="" class="navItem">
+				Log out
+			</a>
+		</div>
+	
+		<div style="width: 100%;height:60px; background-color:white;"></div>
+	
+		<div class="main">
+			<div class="mainDiv" style="margin-top:30px;width:500px;">
+				<div class="mainHeadDiv">
+					Add Post
+				</div>
+				<div class="mainFormDiv">
+					<form>
+						<div class="mainFormInputDiv">
+							Name:
+							<input style="width:450px;height:32px;" type="text" name="name">
+						</div>
+						<div class="mainFormInputDiv" style="flex-direction:row; align-items:center;">
+							Quantity:
+							<input style="width:50px;height:30px;margin-right:130px;" type="number" min="1" default="1">
+							Condition:
+							<select name="rating" style="height:30px;">
+								<option value="0">0 - Worst</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5 - Best</option>
+							</select>
+						</div>
+						<div class="mainFormInputDiv"style="margin-top:20px;">
+							Occupational Usage:
+							<div class="occupationDiv">
+								<fieldset id="occ" style="border:0;align-items:center;padding:0;margin-right:50px;">
+								Academic:
+								<input id="acadRB"type="radio" name="occ">
+								Office:
+								<input id="officeRB"type="radio" name="occ">
+								</fieldset>
+							</div>
+						</div>
+						<div class="mainFormInputDiv"style="margin-top:20px;">
+							Tags:
+							<div class="listTagsDiv">
+								<input style="width:200px;height:32px;" type="text" name="name">
+							</div>
+							<input id="addTag"style="width:100px;height:32px;font-size:15;" type="button" value="Add">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

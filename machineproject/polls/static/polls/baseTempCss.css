@@ -1,0 +1,186 @@
+body{
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	background-color: #f5f7b2;
+}
+
+.navBar{
+	width: 100%;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-direction: row;
+	background-color:#93b9f2;
+	position: fixed;
+}
+
+.navItem{
+	width: 120px;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color:#93b9f2;
+	font-family: Arial;
+	color: white;
+	text-decoration: none;
+}
+
+.navItem:hover{
+	background-color:#6279ea;
+	font-family: Arial;
+	color:white;
+}
+
+.navItem:active{
+	background-color:#93b9f2;
+	font-family: Arial;
+	color:white;
+}
+.main{
+	display: flex;
+	justify-content:center;
+}
+.mainDiv{
+	width:1000px;
+	display:flex;
+	flex-direction: column;
+	margin-bottom:10px;
+	
+}
+.searchDiv{
+	width:100%;
+	height:60px;
+	background-color: #f5f7b2;
+	display:flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	font-family: Arial;
+	color: black;
+	position:fixed;
+}
+input[type=text], select {
+    padding: 1px 8px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+	font-size: 15;
+}
+
+input[type=password], select {
+    padding: 1px 8px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+	font-size: 15;
+}
+
+input[type=submit] {
+    width: 90px;
+    background-color: #93b9f2;
+    color: white;
+    padding: 7px 7px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+	font-size: 15;
+}
+
+input[type=submit]:hover {
+    background-color: #6279ea;
+}
+
+.resultsList{
+	display: flex;
+	align-items: center;
+	justify-content: left;
+	flex-direction: row;
+	flex-wrap: wrap;
+	flex-flow: row wrap;
+	align-content: flex-end;
+	list-style-type:none;
+    margin: 0;
+    padding: 0;
+	padding-left: 40px;
+}
+
+.itemCard{
+	width: 300px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	background-color: white;
+	display:flex;
+	flex-direction: column;
+}
+
+.itemCardName{
+	height:50px;
+	width:100%;
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	font-family:Arial;
+	color:white;
+	font-size:20;
+	background-color:#93b9f2;
+}
+.itemCardDet{
+	width:100%;
+	display:flex;
+	justify-content: center;
+	flex-direction:column;
+	font-family:Arial;
+	font-size:15
+}
+
+.itemCardDetUser{
+	width:100%;
+	display:flex;
+	justify-content: center;
+	font-family:Arial;
+	font-size:15;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.itemCardDetTags{
+	width:93%;
+	display:flex;
+	justify-content: left;
+	align-items: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+	flex-flow: row wrap;
+	align-content: flex-end;
+	font-family:Arial;
+	font-size:15;
+	padding-left:10px;
+	padding-right:10px;
+	margin-bottom:10px;
+}
+.itemDetLinks{
+	text-decoration:none;
+	color:dark blue;
+	margin-right:5px;
+}
+.itemDetLinks:hover{
+	text-decoration:underline;
+	color:dark blue;
+}
+
+.seeMoreDiv{
+	width:100%;
+	display:flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	font-family:Arial;
+	font-size:15;
+	
+}
