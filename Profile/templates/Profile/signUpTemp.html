@@ -1,0 +1,94 @@
+<html>
+	<head>
+        {% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'Profile/baseTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'Profile/formTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'Profile/signUpTempCss.css' %}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script>
+			$(document).ready(function(){
+                $("#occSelect").change(function(){
+                    console.log($('#occSelect').val())
+                    if($('#occSelect').val()=='1')
+                    {
+                        $("#courseSelect").prop('disabled', true);
+                        $("#officeSelect").prop('disabled', false);
+                        
+                    }
+                    else if($('#occSelect').val()=='0')
+                    {
+                        $("#courseSelect").prop('disabled', false);
+                        $("#officeSelect").prop('disabled', true);
+                    }
+                });
+			});
+		</script>
+	</head>
+	
+	<body>
+		<div class="navBar">
+			<a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'profileApp:signInPage' %}" class="navItem">
+                    Sign-in
+                </a>
+                <a href="{% url 'profileApp:signUp' %}" class="navItem">
+                    Sign-up
+                </a>
+		</div>
+	
+		<div style="width: 100%;height:60px; background-color:white;"></div>
+	
+		<div class="main">
+			<div class="mainDiv" style="margin-top:30px;width:500px;align-items:center;">
+				<div class="mainHeadDiv">
+					Sign-up
+				</div>
+				<div class="mainFormDiv">
+					<form action="{% url 'profileApp:justSignedUp' %}" method="post">
+                        {% csrf_token %}
+						<div class="mainFormInputDiv">
+							Name:
+							<input style="width:450px;height:32px;" type="text" name="newName">
+						</div>
+						<div class="mainFormInputDiv"style="margin-top:20px;">
+                            <div align="center">Occupational Usage:</div>
+							<div class="occupationDiv">
+								<select style="height:30px;" name="newOccupation" id="occSelect">
+                                    <option value="0">Academic</option>
+                                    <option value="1">Office</option>
+                                </select>
+							</div>
+                            <div class="courseSelect" align="center" style="margin-top:15px;">
+                                Course:
+                                <select name="selectingCourse" style="height:30px;margin:0;margin-right:50px;" id = "courseSelect">
+                                    {% for x in courses %}
+                                        <option value="{{ x.pk }}">{{ x.degree_name }}</option>
+                                    {% endfor %}
+                                </select>
+                                Office:
+                                <select name="selectingOffice" style="height:30px;margin:0;" id = "officeSelect">
+                                    {% for x in office %}
+                                        <option value="{{ x.pk }}">{{ x.office_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+						</div>
+						<div class="mainFormInputDiv">
+							Username:
+							<input style="width:450px;height:32px;" type="text" name="newUserName">
+						</div>
+						<div class="mainFormInputDiv">
+							Password:
+							<input style="width:450px;height:32px;font-size:15;padding-left:5px;" type="password" name="newPassword">
+						</div>
+						<div class="mainFormInputDiv" style="width:100%;align-items:center;">
+							<input style="width:100px;height:32px;font-size:15;padding-left:5px;" type="submit" name="name">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
