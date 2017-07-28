@@ -1,0 +1,77 @@
+
+<html>
+	<head>
+        {% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/baseTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/formTempCss.css' %}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	</head>
+	
+	<body>
+		{% if request.session.user > 0 %}
+            <div class="navBar">
+                <a href="{% url 'profileApp:viewProfile' request.session.user %}" class="navItem">
+				View Profile
+                </a>
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'postApp:addPost' %}" class="navItem">
+                    Add Posts
+                </a>
+                <a href="{% url 'postApp:home' %}" class="navItem">
+                    Log out
+                </a>
+            </div>
+        {% else %}
+            <div class="navBar">
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'profileApp:signInPage' %}" class="navItem">
+                    Sign-in
+                </a>
+                <a href="{% url 'profileApp:signUp' %}" class="navItem">
+                    Sign-up
+                </a>
+            </div>
+        {% endif %}
+	
+		<div style="width: 100%;height:60px; background-color:white;"></div>
+	
+		<div class="main">
+			<div class="mainDiv" style="margin-top:30px;width:500px;align-items:center;">
+				<div class="mainFormDiv" style="background-color: white;">
+                    <a href="{% url 'postApp:index' %}"><img src="{{ item.item_img.url }}" style="height:500px;"></a>
+                        <p style="font-size: 20px; font-family: Arial;">
+                            From: <a href="{% url 'profileApp:viewProfile' item.item_userfk.pk %}" class="itemDetlinks">{{item.item_userfk.user_username}}</a><br>
+                            Item Name: {{ item.item_name }} <br>
+                            Quantity: {{ item.item_quantity }}<br>
+                            {% if item.item_condition == 0 %}
+                                Condition: Worst State<br>
+                            {% elif item.item_condition == 1 %}
+                                Condition: Bad State<br>
+                            {% elif item.item_condition == 2 %}
+                                Condition: Second Hand<br>
+                            {% elif item.item_condition == 3 %}
+                                Condition: Good State<br>
+                            {% elif item.item_condition == 4 %}
+                                Condition: No scratch<br>
+                            {% elif item.item_condition == 5 %}
+                                Condition: Brand New<br>
+                            {% endif %}
+                            {% if item.item_occupation == 0 %}
+                                Type: Academic Material<br>
+                            {% elif item.item_occupation == 1 %}
+                                Type: Office Material<br>
+                            {% endif %}
+                            Tags: 
+                            {% for tag in item.tag_set.all %}
+                                <a href="{% url 'postApp:searchItem' tag.tag_word %}" class="itemDetlinks">{{tag.tag_word}}</a>
+                            {% endfor %}
+                        </p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
