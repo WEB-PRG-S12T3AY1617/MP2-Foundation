@@ -1,0 +1,26 @@
+
+<ul class="resultsList">
+	{% for item in item_list %}
+    <li>
+        <div class="itemCard">
+            <div class="itemCardImg" style=" background-color:white;display:flex;flex-direction:row;align-items:center;justify-content:center;height:250px;">
+                <a href="{% url 'postApp:details' item.pk%}"><img src="{{ item.item_img.url }}" style="height:200px;"></a>
+            </div>
+            <div class="itemCardName">
+                <a href="" style="text-decoration: none; color:white;">{{item.item_name}}</a>
+            </div>
+            <div class="itemCardDet">
+                <div class="itemCardDetUser">
+                    From: <a href="" class="itemDetlinks">{{item.item_userfk.user_username}}</a>
+                </div>
+                <div class="itemCardDetTags">
+                    Tags: 
+                    {% for tag in item.tag_set.all %}
+                        <a href="" class="itemDetlinks">{{tag.tag_word}}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>

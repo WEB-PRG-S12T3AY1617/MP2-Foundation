@@ -1,0 +1,96 @@
+<html>
+	<head>
+		{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/baseTempCss.css' %}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$('#numItem').change(function(){
+					query = $(this).val()
+					$.post('/Post/listItem/',{nextPage:{{next_page}},content: query, 'csrfmiddlewaretoken': '{{ csrf_token }}'}, function(data){
+						console.log(query);
+						$('.resultsDiv').html(data);
+					})
+				});
+			});
+		</script>
+	</head>
+	
+	<body>
+        {% if request.session.user > 0 %}
+            <div class="navBar">
+                <a href="{% url 'profileApp:viewProfile' request.session.user %}" class="navItem">
+				View Profile
+                </a>
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'postApp:addPost' %}" class="navItem">
+                    Add Posts
+                </a>
+                <a href="{% url 'postApp:home' %}" class="navItem">
+                    Log out
+                </a>
+            </div>
+        {% else %}
+            <div class="navBar">
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'profileApp:signInPage' %}" class="navItem">
+                    Sign-in
+                </a>
+                <a href="{% url 'profileApp:signUp' %}" class="navItem">
+                    Sign-up
+                </a>
+            </div>
+        {% endif %}
+	
+		<div style="width: 100%;height:60px; background-color:white;"></div>
+	
+		<div class="main">
+			<div class="searchDiv">
+				<form style="margin-bottom:0;" action="{% url 'postApp:searchBoxItem' %}" method="post">
+				{% csrf_token %}
+                    Search: 
+					<input style="width:400px;height:32px;" type="text" name="searchWord">
+					<input type="submit">
+				</form>
+			</div>
+			<div class="mainDiv">
+				<div style="width: 100%;height:60px; background-color:white;"></div>
+				<div class="resultsDiv">
+					<ul class="resultsList">
+                        {% for item in item_list %}
+                            {% for x in tag_list %}
+                                {% if x.tag_itemfk == item.id %}
+                                    <li>
+                                        <div class="itemCard">
+                                            <div class="itemCardImg" style=" background-color:white;display:flex;flex-direction:row;align-items:center;justify-content:center;height:250px;">
+                                                <a href="{% url 'postApp:details' item.pk%}"><img src="{{ item.item_img.url }}" style="height:200px;"></a>
+                                            </div>
+                                            <div class="itemCardName">
+                                                <a href="{% url 'postApp:details' item.pk%}" style="text-decoration: none; color:white;">{{item.item_name}}</a>
+                                            </div>
+                                            <div class="itemCardDet">
+                                                <div class="itemCardDetUser">
+                                                    From: <a href="{% url 'profileApp:viewProfile' item.item_userfk.pk %}" class="itemDetlinks">{{item.item_userfk.user_username}}</a>
+                                                </div>
+                                                <div class="itemCardDetTags">
+                                                Tags: 
+                                                {% for tag in item.tag_set.all %}
+                                                    <a href="{% url 'postApp:searchItem' tag.tag_word %}" class="itemDetlinks">{{tag.tag_word}}</a>
+                                                {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,62 @@
+.mainDiv{
+	width:1300px;
+	display:flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.itemProfDiv{
+	background-color: #f5f7b2;
+	height:auto;
+	overflow:auto;
+	display:flex;
+	flex-direction:column;
+	align-items: center;
+	width: 370px;
+	padding:10px;
+
+	margin-right:20px;
+}
+
+.itemName{
+	height:50px;
+	width:100%;
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	font-family:Arial;
+	color:white;
+	font-size:20;
+	background-color:#93b9f2;
+}
+
+.itemDet{
+	width:100%;
+	display:flex;
+	flex-direction:column;
+	justify-content: center;
+	align-items: center;
+	font-family:Arial;
+	color:black;
+	font-size:15;
+	background-color:white;
+	padding-left:10px;
+}
+
+.makeOfferButton{
+	font-family:Arial;
+	font-size:17px;
+	color:white;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	background-color:green;
+	height:50px;
+	width:100%;
+	cursor:hand;
+}
+.makeOfferButton:hover{
+	cursor:hand;
+	background-color:#4cc47c;
+	color:white;
+}

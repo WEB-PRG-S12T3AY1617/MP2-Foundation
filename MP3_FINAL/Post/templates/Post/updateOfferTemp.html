@@ -1,0 +1,309 @@
+<html>				<!-- updateOfferTemp-->
+	<head>
+        {% load static %}
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/baseTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/formTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/profTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/itemDetTempCss.css' %}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$("#itemUpdate").css("display","");
+				$("#priceUpdate").css("display","none");
+				
+				$("#offerTypeSelect").change(function(){
+                    if($('#offerTypeSelect').val()=='0')
+                    {
+                        $("#itemUpdate").css("display","none");
+						$("#priceUpdate").css("display","");
+					}
+                    else if($('#offerTypeSelect').val()=='1')
+                    {
+						$("#itemUpdate").css("display","");
+						$("#priceUpdate").css("display","none");
+                    }
+                });
+                
+                {%for offer in offerList%}
+					$("#itemUpdate{{forloop.counter}}").css("display","");
+					$("#priceUpdate{{forloop.counter}}").css("display","none");
+					$("#updateFormDiv{{forloop.counter}}").css("display","none");
+					$("#footer2{{forloop.counter}}").css("display","none");
+					
+					$("#offerTypeSelect{{forloop.counter}}").change(function(){
+						if($('#offerTypeSelect{{forloop.counter}}').val()=='0')
+						{
+							$("#itemUpdate{{forloop.counter}}").css("display","none");
+							$("#priceUpdate{{forloop.counter}}").css("display","");
+						}
+						else if($('#offerTypeSelect{{forloop.counter}}').val()=='1')
+						{
+							$("#itemUpdate{{forloop.counter}}").css("display","");
+							$("#priceUpdate{{forloop.counter}}").css("display","none");
+						}
+					});
+					$("#updateOffer{{forloop.counter}}").click(function(){
+						$("#updateFormDiv{{forloop.counter}}").css("display","");
+						$("#footer1{{forloop.counter}}").css("display","none");
+						$("#footer2{{forloop.counter}}").css("display","");
+					});
+					$("#updateFormCancel{{forloop.counter}}").click(function(){
+						$("#updateFormDiv{{forloop.counter}}").css("display","none");
+						$("#footer1{{forloop.counter}}").css("display","");
+						$("#footer2{{forloop.counter}}").css("display","none");
+					});
+					$("#updateFormSubmit{{forloop.counter}}").click(function() {
+						console.log("hello");
+						$("#updateForm{{forloop.counter}}").submit();
+					});
+				{% endfor %}
+                
+				$("#makeOfferSubmit").click(function() {
+					$("#makeOfferForm").submit();
+				});
+			});
+		</script>
+	</head>
+	
+	<body>
+		{% if request.session.user > 0 %}
+            <div class="navBar">
+                <a href="{% url 'profileApp:viewProfile' request.session.user %}" class="navItem">
+				View Profile
+                </a>
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'postApp:addPost' %}" class="navItem">
+                    Add Posts
+                </a>
+                <a href="{% url 'postApp:home' %}" class="navItem">
+                    Log out
+                </a>
+            </div>
+        {% else %}
+            <div class="navBar">
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'profileApp:signInPage' %}" class="navItem">
+                    Sign-in
+                </a>
+                <a href="{% url 'profileApp:signUp' %}" class="navItem">
+                    Sign-up
+                </a>
+            </div>
+        {% endif %}
+	
+		<div style="width: 100%;height:60px; background-color:white;"></div>
+	
+		<div class="main">
+			<div class="mainDiv">
+				<div class="itemProfDiv">
+					<div style="background-color:white;display:flex;justify-content:center;align-items:center;width:100%;">
+						<img src="{{ item.item_img.url }}" style="width:340px;margin-bottom:20px;margin-top:20px;">
+					</div>
+					<div style="display:flex;justify-content:center; align-items:center;flex-direction:column;width:100%;">  
+						<div class="itemName">
+							<a>{{ item.item_name }}</a>
+						</div>
+						<div class="itemDet">
+							<div style="display:flex;flex-direction:row;margin-bottom:5px;">
+								From:
+								<a href="{% url 'profileApp:viewProfile' item.item_userfk.pk %}" class="itemDetlinks">{{item.item_userfk.user_username}}</a>
+							</div>
+							<div style="display:flex;flex-direction:row;margin-bottom:5px;">
+								Quantity:
+								<a>{{ item.item_quantity }}</a>
+							</div>
+							<div style="display:flex;flex-direction:row;margin-bottom:5px;">
+								Condition:
+								{% if item.item_condition == 0 %}
+									<a href="{% url 'postApp:searchByCondition' item.item_condition %}" class="itemDetlinks">Worst State</a>
+								{% elif item.item_condition == 1 %}
+									<a href="{% url 'postApp:searchByCondition' item.item_condition %}" class="itemDetlinks">Bad State</a>
+								{% elif item.item_condition == 2 %}
+									<a href="{% url 'postApp:searchByCondition' item.item_condition %}" class="itemDetlinks">Second Hand</a>
+								{% elif item.item_condition == 3 %}
+									<a href="{% url 'postApp:searchByCondition' item.item_condition %}" class="itemDetlinks">Good State</a>
+								{% elif item.item_condition == 4 %}
+									<a href="{% url 'postApp:searchByCondition' item.item_condition %}" class="itemDetlinks">No scratch</a>
+								{% elif item.item_condition == 5 %}
+									<a href="{% url 'postApp:searchByCondition' item.item_condition %}" class="itemDetlinks">Brand New</a>
+								{% endif %}
+							</div>
+							<div style="display:flex;flex-direction:row;margin-bottom:5px;">
+								Type:
+								{% if item.item_occupation == 0 %}
+									<a href="{% url 'postApp:searchByOccupation' item.item_occupation %}" class="itemDetlinks">Academic Material</a>
+								{% elif item.item_occupation == 1 %}
+									<a href="{% url 'postApp:searchByOccupation' item.item_occupation %}" class="itemDetlinks">Office Material</a>
+								{% endif %}
+							</div>
+							<div style="display:flex;flex-direction:row;margin-bottom:5px;flex-wrap:wrap;">
+								Tags:
+								{% for tag in item.tag_set.all %}
+									<a href="{% url 'postApp:searchItem' tag.tag_word %}" class="itemDetlinks">{{tag.tag_word}}</a>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					<div style="width:100%;margin-top:20px;">
+						<a data-toggle="modal" data-target="#makeOffer" class="makeOfferButton">
+							Make an Offer
+						</a>
+						<div class="modal fade" id="makeOffer" role="dialog">
+							<div class="modal-dialog modal-small">
+								<div class="modal-content">
+									<form action="{% url 'postApp:addingOffer' %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">View Offer</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="offerModal" id="updateFormDiv">
+                                                <div style="display:flex;flex-direction:row;"id="makeOfferForm" >
+                                                    <input style="display:none;" name="currentItemForOffer" value="{{item.pk}}">                      
+                                                    <select name="typeOffer" style="height:30px;margin:0;" id = "offerTypeSelect">
+                                                        <option selected value="1">Item</option>
+                                                        <option value="0">Money</option>
+                                                    </select>
+                                                    <div style="margin-left:10px;"id="priceUpdate">
+                                                        Price:
+                                                        <input style="width:50px;height:30px;margin-right:10px;" type="number" min="1" default="1" name= "itemQuantity">
+                                                    </div>
+                                                    <div style="margin-left:10px;"id="itemUpdate">
+                                                        Item:
+                                                        <select name="exchangingItem" style="height:30px;margin:0;" id = "offerTypeSelect">
+                                                            {% for item in itemList%}
+                                                                <option value="{{item.pk}}">{{item.item_name}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+									<div class="modal-footer" id="footer2">
+										<input type="submit" class="btn btn-default">
+										<a id="updateFormCancel"type="button" class="btn btn-default"data-dismiss="modal">Cancel</a >
+									</div>
+                                    </form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				
+				<div class="itemOfferDiv">
+					<ul class="offerResultsList">
+						{% for offer in offerList %}
+						<li data-toggle="modal" data-target="#myModal{{ forloop.counter }}">
+							<div class="offerItem">
+								<img src="{% static 'Post/DP.jpg' %}"  style="width:70px;margin-left:20px;">
+								{% if offer.offer_type == 1%}
+								<a style="margin-left:20px;margin-right:0">I offered an exchange</a>
+								{% else %}
+								<a style="margin-left:20px;margin-right:0">I offered a payment</a>
+								{% endif %}
+							</div>
+						</li>
+						
+                        
+                        <div class="modal fade" id="myModal{{ forloop.counter }}" role="dialog">
+							<div class="modal-dialog modal-small">
+								<div class="modal-content">
+                                    <form id="makeOfferForm{{forloop.counter}}" action="{% url 'postApp:updatingOffer' %}" method="post">
+                                    <input style="display:none;" name="currentItemForOffer" value="{{item.pk}}"> 
+                                    {% csrf_token %}
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Update Offer</h4>
+									</div>
+									<div class="modal-body">
+										{% if offer.offer_type == 1 %}
+										<div class="offerModal">
+											<div class="itemCard"style="width:200px;">
+												<div class="itemCardImg" style="background-color:white;display:flex;align-items:center;justify-content:center;">
+													<img src="{{offer.offer_itemexfk.item_img.url}}" style="width:200px;">
+												</div>
+												<div class="itemCardName">
+													<a href="" style="text-decoration: none; color:white;">{{offer.offer_itemexfk.item_name}}</a>
+												</div>	
+												<div class="itemCardDet">
+													<div class="itemCardDetUser">
+														From: <a href="" class="itemDetlinks">{{offer.offer_clientfk.user_username}}</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										{% else %}
+										<div class="offerModal">
+											<div class="itemCard"style="width:200px;">
+												<div class="itemCardImg" style="display:flex;justify-content:center;">
+													<img src="{% static 'Post/money.jpg' %}" style="width:70%;height:150px;">
+												</div>
+												<div class="itemCardName">
+													<a href="" style="text-decoration: none; color:white;">Php{{offer.offer_cash}}</a>
+												</div>	
+												<div class="itemCardDet">
+													<div class="itemCardDetUser">
+														From: <a href="" class="itemDetlinks">{{offer.offer_clientfk.user_username}}</a>
+													</div>
+												</div>
+											</div>
+										</div>
+										{% endif %}
+										<div class="offerModal" id="updateFormDiv{{forloop.counter}}">
+								            <div style="display:flex;flex-direction:row;"id="makeOfferForm{{forloop.counter}}">
+                                                <input style="display:none;" name="updatingThisOffer" value="{{offer.pk}}">
+                                                <select name="updatingOfferType" style="height:30px;margin:0;" id = "offerTypeSelect{{forloop.counter}}">
+													<option value="1">Item</option>
+													<option value="0">Money</option>
+												</select>
+												<div style="margin-left:10px;"id="priceUpdate{{forloop.counter}}">
+													Price:
+													<input style="width:50px;height:30px;margin-right:10px;" type="number" min="1" default="1" name= "updatingQuantity">
+												</div>
+												<div style="margin-left:10px;"id="itemUpdate{{forloop.counter}}">
+													Item:
+													<select name="updatingExchangeItem" style="height:30px;margin:0;" id = "itemSelect{{forloop.counter}}">
+														{% for item in itemList%}
+															<option value="{{item.id}}">{{item.item_name}}</option>
+														{% endfor %}
+													</select>
+												</div>
+                                            </div>
+										</div>
+									</div>
+									<div class="modal-footer" id="footer1{{forloop.counter}}">
+										<a type="button" id="updateOffer{{forloop.counter}}" class="btn btn-default">Update Offer</a>
+                                        
+                                    </div>
+									<div class="modal-footer" id="footer2{{forloop.counter}}">
+										<input type="submit" class="btn btn-default" name="updateMe">
+										<a id="updateFormCancel{{forloop.counter}}"type="button" class="btn btn-default">Cancel</a >
+									</div>
+                                    </form>
+                                    <div class="modal-footer" id="footer2{{forloop.counter}}">
+                                        <form action="{% url 'postApp:cancellingOffer' %}" method="post">
+                                            {% csrf_token %}
+                                            <input style="display:none;" name="deleteThisOffer" value="{{offer.pk}}">
+                                            <input style="display:none;" name="currentItemForOffer" value="{{item.pk}}">
+                                            <input type="submit" style="width:100px;" value="Cancel Offer" name="cancellingThisOffer">
+                                        </form>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,167 @@
+<html>				<!-- updateOfferTemp-->
+	<head>
+        {% load static %}
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/baseTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/formTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/profTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/itemDetTempCss.css' %}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$("#itemUpdate").css("display","");
+				$("#priceUpdate").css("display","none");
+				
+				$("#offerTypeSelect").change(function(){
+                    if($('#offerTypeSelect').val()=='1')
+                    {
+                        $("#itemUpdate").css("display","none");
+						$("#priceUpdate").css("display","");
+					}
+                    else if($('#offerTypeSelect').val()=='0')
+                    {
+						$("#itemUpdate").css("display","");
+						$("#priceUpdate").css("display","none");
+                    }
+                });
+				$("#makeOfferSubmit").click(function() {
+					$("#makeOfferForm").submit();
+				});
+			});
+		</script>
+	</head>
+	
+	<body>
+		{% if request.session.user > 0 %}
+            <div class="navBar">
+                <a href="{% url 'profileApp:viewProfile' request.session.user %}" class="navItem">
+				View Profile
+                </a>
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'postApp:addPost' %}" class="navItem">
+                    Add Posts
+                </a>
+                <a href="{% url 'postApp:home' %}" class="navItem">
+                    Log out
+                </a>
+            </div>
+        {% else %}
+            <div class="navBar">
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'profileApp:signInPage' %}" class="navItem">
+                    Sign-in
+                </a>
+                <a href="{% url 'profileApp:signUp' %}" class="navItem">
+                    Sign-up
+                </a>
+            </div>
+        {% endif %}
+	
+		<div style="width: 100%;height:60px; background-color:white;"></div>
+	
+		<div class="main">
+			<div class="mainDiv" style="margin-top:30px;width:500px;align-items:center;">
+				<div class="itemProfDiv">
+					<div style="background-color:white;display:flex;justify-content:center;align-items:center;width:100%;">
+						<img src="{{ item.item_img.url }}" style="width:340px;margin-bottom:20px;margin-top:20px;">
+					</div>
+					<div style="display:flex;justify-content:center; align-items:center;flex-direction:column;width:100%;">  
+						<div class="itemName">
+							<a>{{ item.item_name }}</a>
+						</div>
+						<div class="itemDet">
+							<div style="display:flex;flex-direction:row;margin-bottom:5px;">
+								From:
+								<a href="{% url 'profileApp:viewProfile' item.item_userfk.pk %}" class="itemDetlinks">{{item.item_userfk.user_username}}</a>
+							</div>
+							<div style="display:flex;flex-direction:row;margin-bottom:5px;">
+								Quantity:
+								<a>{{ item.item_quantity }}</a>
+							</div>
+							<div style="display:flex;flex-direction:row;margin-bottom:5px;">
+								Condition:
+								{% if item.item_condition == 0 %}
+									<a>Worst State</a>
+								{% elif item.item_condition == 1 %}
+									<a>Bad State</a>
+								{% elif item.item_condition == 2 %}
+									<a>Second Hand</a>
+								{% elif item.item_condition == 3 %}
+									<a>Good State</a>
+								{% elif item.item_condition == 4 %}
+									<a>No scratch</a>
+								{% elif item.item_condition == 5 %}
+									<a>Brand New</a>
+								{% endif %}
+							</div>
+							<div style="display:flex;flex-direction:row;margin-bottom:5px;">
+								Type:
+								{% if item.item_occupation == 0 %}
+									<a>Academic Material</a>
+								{% elif item.item_occupation == 1 %}
+									<a>Office Material</a>
+								{% endif %}
+							</div>
+							<div style="display:flex;flex-direction:row;margin-bottom:5px;flex-wrap:wrap;">
+								Tags:
+								{% for tag in item.tag_set.all %}
+									<a href="{% url 'postApp:searchItem' tag.tag_word %}" class="itemDetlinks">{{tag.tag_word}}</a>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					<div style="width:100%;margin-top:20px;">
+						<a data-toggle="modal" data-target="#myModal1" class="makeOfferButton">
+							Make an Offer
+						</a>
+						<div class="modal fade" id="myModal1" role="dialog">
+							<div class="modal-dialog modal-small">
+								<div class="modal-content">
+									<form action="{% url 'postApp:addingOffer' %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">View Offer</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="offerModal" id="updateFormDiv">
+                                                <div style="display:flex;flex-direction:row;"id="makeOfferForm" >
+                                                    <input style="display:none;" name="currentItemForOffer" value="{{item.pk}}">                      
+                                                    <select name="typeOffer" style="height:30px;margin:0;" id = "offerTypeSelect">
+                                                        <option selected value="0">Item</option>
+                                                        <option value="1">Money</option>
+                                                    </select>
+                                                    <div style="margin-left:10px;"id="priceUpdate">
+                                                        Price:
+                                                        <input style="width:50px;height:30px;margin-right:10px;" type="number" min="1" default="1" name= "itemQuantity">
+                                                    </div>
+                                                    <div style="margin-left:10px;"id="itemUpdate">
+                                                        Item:
+                                                        <select name="exchangingItem" style="height:30px;margin:0;" id = "offerTypeSelect">
+                                                            {% for item in itemList%}
+                                                                <option value="{{item.pk}}">{{item.item_name}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+									<div class="modal-footer" id="footer2">
+										<input type="submit" class="btn btn-default">
+										<a id="updateFormCancel"type="button" class="btn btn-default"data-dismiss="modal">Cancel</a >
+									</div>
+                                    </form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
