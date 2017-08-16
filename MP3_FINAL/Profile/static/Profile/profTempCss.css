@@ -1,0 +1,120 @@
+.userProfDiv{
+	width:100%;
+	height:250px;
+	background-color: #f5f7b2;
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: Arial;
+	color: black;
+	position:fixed;
+}
+
+.userDetDiv{
+	display:flex;
+	flex-direction: column;
+}
+.userNames{
+	display:flex;
+	flex-direction: row;
+}
+
+.userDet{
+	display:flex;
+	flex-direction: column;
+}
+
+.userOcc{
+	display:flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.name{
+	padding-right:10px;
+}
+
+
+
+
+
+
+
+
+
+.tabBar{
+	width: 100%;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	margin-top:24px;
+	background-color:#e9ed50;
+}
+
+.tabItem{
+	width: 120px;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color:#e9ed50;
+	font-family: Arial;
+	font-size: 18px;
+	color: white;
+	text-decoration: none;
+}
+
+.tabItem:hover{
+	background-color:#f7fc32;
+	font-family: Arial;
+	color:white;
+	cursor:hand;
+}
+
+.tabItem:active{
+	background-color:#e9ed50;
+	font-family: Arial;
+	color:white;
+	cursor:hand;
+}
+.offerResultsList{
+	display:flex;
+	flex-direction:column;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	list-style-type:none;
+    margin: 0;
+    padding: 0;
+}
+.offerItem{
+	background-color:#f4f77e;
+	width:560px;
+	height:100px;
+	border-radius:5px;
+	border-left:10px solid #93b9f2;
+	display:flex;
+	flex-direction:row;
+	align-items: center;
+	margin-top:10px;
+	font-family:Arial;
+	font-size:20;
+	color:#7d7f84;
+}
+.offerItem:hover{
+	box-shadow: 5px 5px 5px #888888;
+	cursor:hand;
+}
+.offerItem:active{
+	box-shadow: 0px 0px 0px;
+	cursor:hand;
+}
+.offerModal{
+	display:flex;
+	flex-direction:row;
+	align-items: center;
+	justify-content: center;
+}

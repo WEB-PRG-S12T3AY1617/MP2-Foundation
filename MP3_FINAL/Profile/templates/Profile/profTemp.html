@@ -1,0 +1,108 @@
+{%load static%}
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/baseTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/profTempCss.css' %}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script>
+			$(document).ready(function()
+			{
+				$("#postResultsDiv").css("display","flex");
+				$("#offerResultsDiv").css("display","none");
+				$("#tabOffer").click(function(){
+					$("#offerResultsDiv").css("display","");
+					$("#postResultsDiv").css("display","none");
+				});
+				$("#tabPost").click(function(){
+					$("#offerResultsDiv").css("display","none");
+					$("#postResultsDiv").css("display","flex");
+				});
+			});
+		</script>
+	</head>
+	
+	<body>
+		<div class="navBar">
+            {% if request.session.user > 0 %}
+            <div class="navBar">
+                <a href="{% url 'profileApp:viewProfile' request.session.user %}" class="navItem">
+				    View Profile
+                </a>
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'postApp:addPost' %}" class="navItem">
+                    Add Posts
+                </a>
+                <a href="{% url 'postApp:home' %}" class="navItem">
+                    Log out
+                </a>
+            </div>
+        {% else %}
+            <div class="navBar">
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'profileApp:signInPage' %}" class="navItem">
+                    Sign-in
+                </a>
+                <a href="{% url 'profileApp:signUp' %}" class="navItem">
+                    Sign-up
+                </a>
+            </div>
+        {% endif %}
+		</div>
+	
+		<div style="width: 100%;height:60px; background-color:white;"></div>
+		
+		<div class="main">				
+			<div class="userProfDiv"style="height:200px;">
+				<img src="{% static 'Post/DP.jpg' %}"  style="width:100px;margin-bottom:20px;margin-top:20px;">
+				<div class="userDet" style="margin-bottom:0px;">
+					<div class="userNames">
+						Name:<a href="" class="name">{{user.user_name}}</a>
+						Username:<a href="" class="name">{{user.user_username}}</a>
+					</div>
+					<div class="userOcc">
+                        {% if user.user_occupation == 0%}
+                            Occupation:<a href="" class="name">{{ user.user_degreefk }}</a>
+                        {% else %}
+                            Occupation:<a href="" class="name">{{ user.user_officefk }}</a>
+                        {% endif %}
+					</div>
+				</div>
+			</div>
+			<div class="mainDiv">
+				<div class="reultsDiv"style="margin-top:200px;display:none"id="postResultsDiv">
+					<ul class="resultsList">
+						{% for item in item_list %}
+						<li>
+							<div class="itemCard">
+								<div class="itemCardImg" style=" background-color:white;display:flex;flex-direction:row;align-items:center;justify-content:center;height:250px;">
+                                    <a href="{% url 'postApp:details' item.id%}"><img src="{{ item.item_img.url }}" style="height:200px;"></a>
+								</div>
+								<div class="itemCardName">
+									<a href="" style="text-decoration: none; color:white;">{{item.item_name}}</a>
+								</div>
+								<div class="itemCardDet">
+									<div class="itemCardDetUser">
+										From: <a href="" class="itemDetlinks">{{item.item_userfk.user_username}}</a>
+									</div>
+									<div class="itemCardDetTags">
+										Tags: 
+										{% for tag in item.tag_set.all %}
+											<a href="" class="itemDetlinks">{{tag.tag_word}}</a>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,324 @@
+{%load static%}
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/baseTempCss.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'Post/profTempCss.css' %}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script>
+			$(document).ready(function()
+			{
+				$("#postResultsDiv").css("display","flex");
+				$("#offerResultsDiv").css("display","none");
+				$("#tabOffer").click(function(){
+					$("#offerResultsDiv").css("display","");
+					$("#postResultsDiv").css("display","none");
+				});
+				$("#tabPost").click(function(){
+					$("#offerResultsDiv").css("display","none");
+					$("#postResultsDiv").css("display","flex");
+				});
+			});
+		</script>
+	</head>
+	
+	<body>
+		<div class="navBar">
+            {% if request.session.user > 0 %}
+            <div class="navBar">
+                <a href="{% url 'profileApp:viewProfile' request.session.user %}" class="navItem">
+				    View Profile
+                </a>
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'postApp:addPost' %}" class="navItem">
+                    Add Posts
+                </a>
+                <a href="{% url 'postApp:home' %}" class="navItem">
+                    Log out
+                </a>
+            </div>
+        {% else %}
+            <div class="navBar">
+                <a href="{% url 'postApp:index' %}" class="navItem">
+                    View Posts
+                </a>
+                <a href="{% url 'profileApp:signInPage' %}" class="navItem">
+                    Sign-in
+                </a>
+                <a href="{% url 'profileApp:signUp' %}" class="navItem">
+                    Sign-up
+                </a>
+            </div>
+        {% endif %}
+		</div>
+	
+		<div style="width: 100%;height:60px; background-color:white;"></div>
+		
+		<div class="main">				
+			<div class="userProfDiv">
+				<img src="{% static 'Post/DP.jpg' %}"  style="width:100px;margin-bottom:20px;margin-top:20px;">
+				<div class="userDet">
+					<div class="userNames">
+						Name:<a href="" class="name">{{user.user_name}}</a>
+						Username:<a href="" class="name">{{user.user_username}}</a>
+					</div>
+					<div class="userOcc">
+                        {% if user.user_occupation == 0%}
+                            Occupation:<a href="" class="name">{{ user.user_degreefk }}</a>
+                        {% else %}
+                            Occupation:<a href="" class="name">{{ user.user_officefk }}</a>
+                        {% endif %}
+					</div>
+				</div>
+				<div class="tabBar">
+					<a class="tabItem" id="tabPost">
+						Post
+					</a>
+					<a class="tabItem" id="tabOffer">
+						Offer
+					</a>
+				</div>
+			</div>
+			<div class="mainDiv">
+				<div class="reultsDiv"style="margin-top:260px;display:none"id="postResultsDiv">
+					<ul class="resultsList">
+						{% for item in item_list %}
+						<li>
+							<div class="itemCard">
+								<div class="itemCardImg" style=" background-color:white;display:flex;flex-direction:row;align-items:center;justify-content:center;height:250px;">
+                                    <a href="{% url 'postApp:details' item.id%}"><img src="{{ item.item_img.url }}" style="height:200px;"></a>
+								</div>
+								<div class="itemCardName">
+									<a href="" style="text-decoration: none; color:white;">{{item.item_name}}</a>
+								</div>
+								<div class="itemCardDet">
+									<div class="itemCardDetUser">
+										From: <a href="" class="itemDetlinks">{{item.item_userfk.user_username}}</a>
+									</div>
+									<div class="itemCardDetTags">
+										Tags: 
+										{% for tag in item.tag_set.all %}
+											<a href="" class="itemDetlinks">{{tag.tag_word}}</a>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="reultsDiv"style="margin-top:250px;"id="offerResultsDiv">
+					<ul class="offerResultsList">
+						{% for offer in offer_list %}
+						<li data-toggle="modal" data-target="#myModal{{ forloop.counter }}">
+							<div class="offerItem">
+								<img src="{% static 'Post/DP.jpg' %}"  style="width:70px;margin-left:20px;">
+								{% if offer.offer_type == 1%}
+								<a style="margin-left:20px;margin-right:0">{{offer.offer_clientfk.user_username}} offers an exchange</a>
+								{% else %}
+								<a style="margin-left:20px;margin-right:0">{{offer.offer_clientfk.user_username}} offers a payment</a>
+								{% endif %}
+							</div>
+						</li>
+						<div class="modal fade" id="myModal{{ forloop.counter }}" role="dialog">
+							<div class="modal-dialog modal-small">
+                                {% if offer.offer_status == 0 %}
+                                <div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">View Offer</h4>
+									</div>
+									<div class="modal-body">
+										<div class="offerModal">
+											<div class="itemCard"style="width:200px;">
+												<div class="itemCardImg">
+													<img src='{{offer.offer_itemfk.item_img.url}}' style="width:100%;height:150px;">
+												</div>
+												<div class="itemCardName">
+													<a href="" style="text-decoration: none; color:white;">{{offer.offer_itemfk.item_name}}</a>
+												</div>	
+												<div class="itemCardDet">
+													<div class="itemCardDetUser">
+														From: <a href="" class="itemDetlinks">{{offer.offer_itemfk.item_userfk.user_username}}</a>
+													</div>
+												</div>
+											</div>
+											{% if offer.offer_type == 1 %}
+											<div class="itemCard"style="width:200px;">
+												<div class="itemCardImg" style="background-color:white;display:flex;align-items:center;justify-content:center;">
+													<img src="{{offer.offer_itemexfk.item_img.url}}" style="width:100%;height:150px;">
+												</div>
+												<div class="itemCardName">
+													<a href="" style="text-decoration: none; color:white;">{{offer.offer_itemexfk.item_name}}</a>
+												</div>	
+												<div class="itemCardDet">
+													<div class="itemCardDetUser">
+														From: <a href="" class="itemDetlinks">{{offer.offer_clientfk.user_username}}</a>
+													</div>
+												</div>
+											</div>
+											{% else %}
+											<div class="itemCard"style="width:200px;">
+												<div class="itemCardImg" style="display:flex;justify-content:center;">
+													<img src="{% static 'Post/money.jpg' %}" style="width:70%;height:150px;">
+												</div>
+												<div class="itemCardName">
+													<a href="" style="text-decoration: none; color:white;">Php{{offer.offer_cash}}</a>
+												</div>	
+												<div class="itemCardDet">
+													<div class="itemCardDetUser">
+														From: <a href="" class="itemDetlinks">{{offer.offer_clientfk.user_username}}</a>
+													</div>
+												</div>
+											</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="modal-footer" style="display:flex;justify-content:center;align-items:center;">
+                                        <form action="{% url 'postApp:acceptOffer1' %}" method="post">
+                                            {% csrf_token %}
+                                            <input style="display:none;" name="acceptThisOffer" value="{{offer.offer_itemfk}}">
+                                            <input style="display:none;" name="acceptThisOfferP" value="{{offer.pk}}">
+                                            <input type="submit" style="width:100px;" value="Accept" name="Accept">
+                                            <div style="display:flex;justify-content:center;align-itens:center;">
+                                                <textarea rows="4" cols="20" name="acceptedCommentTextarea"></textarea>
+                                            </div>
+                                        </form>
+                                        <form action="{% url 'postApp:rejectOffer1' %}" method="post" style="margin-left:200px;">
+                                            {% csrf_token %}
+                                            <input style="display:none;" name="rejectThisOffer" value="{{offer.offer_itemfk}}">
+                                            <input style="display:none;" name="rejectThisOfferP" value="{{offer.pk}}">
+                                            <input type="submit" style="width:100px;" value="Reject" name="Reject">
+                                            <div style="display:flex;justify-content:center;align-itens:center;">
+                                                <textarea rows="4" cols="20" name="rejectedCommentTextarea"></textarea>
+                                            </div>
+                                        </form>
+									</div>
+                                </div>
+                                {% elif offer.offer_status == 2 %}
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Offer Accepted</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="offerModal">
+                                            <div class="itemCard"style="width:200px;">
+												<div class="itemCardImg">
+													<img src='{{offer.offer_itemfk.item_img.url}}' style="width:100%;height:150px;">
+												</div>
+												<div class="itemCardName">
+													<a href="" style="text-decoration: none; color:white;">{{offer.offer_itemfk.item_name}}</a>
+												</div>	
+												<div class="itemCardDet">
+													<div class="itemCardDetUser">
+														From: <a href="" class="itemDetlinks">{{offer.offer_itemfk.item_userfk.user_username}}</a>
+													</div>
+												</div>
+											</div>
+											{% if offer.offer_type == 1 %}
+											<div class="itemCard"style="width:200px;">
+												<div class="itemCardImg" style="background-color:white;display:flex;align-items:center;justify-content:center;">
+													<img src="{{offer.offer_itemexfk.item_img.url}}" style="width:100%;height:150px;">
+												</div>
+												<div class="itemCardName">
+													<a href="" style="text-decoration: none; color:white;">{{offer.offer_itemexfk.item_name}}</a>
+												</div>	
+												<div class="itemCardDet">
+													<div class="itemCardDetUser">
+														From: <a href="" class="itemDetlinks">{{offer.offer_clientfk.user_username}}</a>
+													</div>
+												</div>
+											</div>
+											{% else %}
+											<div class="itemCard"style="width:200px;">
+												<div class="itemCardImg" style="display:flex;justify-content:center;">
+													<img src="{% static 'Post/money.jpg' %}" style="width:70%;height:150px;">
+												</div>
+												<div class="itemCardName">
+													<a href="" style="text-decoration: none; color:white;">Php{{offer.offer_cash}}</a>
+												</div>	
+												<div class="itemCardDet">
+													<div class="itemCardDetUser">
+														From: <a href="" class="itemDetlinks">{{offer.offer_clientfk.user_username}}</a>
+													</div>
+												</div>
+											</div>
+											{% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="display:flex;justify-content:center;align-items:center;">
+                                        The Offer was Accepted<br>
+                                        Reason: {{offer.offer_comment}}
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Offer Accepted</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="offerModal">
+                                            <div class="itemCard"style="width:200px;">
+												<div class="itemCardImg">
+													<img src='{{offer.offer_itemfk.item_img.url}}' style="width:100%;height:150px;">
+												</div>
+												<div class="itemCardName">
+													<a href="" style="text-decoration: none; color:white;">{{offer.offer_itemfk.item_name}}</a>
+												</div>	
+												<div class="itemCardDet">
+													<div class="itemCardDetUser">
+														From: <a href="" class="itemDetlinks">{{offer.offer_itemfk.item_userfk.user_username}}</a>
+													</div>
+												</div>
+											</div>
+											{% if offer.offer_type == 1 %}
+											<div class="itemCard"style="width:200px;">
+												<div class="itemCardImg" style="background-color:white;display:flex;align-items:center;justify-content:center;">
+													<img src="{{offer.offer_itemexfk.item_img.url}}" style="width:100%;height:150px;">
+												</div>
+												<div class="itemCardName">
+													<a href="" style="text-decoration: none; color:white;">{{offer.offer_itemexfk.item_name}}</a>
+												</div>	
+												<div class="itemCardDet">
+													<div class="itemCardDetUser">
+														From: <a href="" class="itemDetlinks">{{offer.offer_clientfk.user_username}}</a>
+													</div>
+												</div>
+											</div>
+											{% else %}
+											<div class="itemCard"style="width:200px;">
+												<div class="itemCardImg" style="display:flex;justify-content:center;">
+													<img src="{% static 'Post/money.jpg' %}" style="width:70%;height:150px;">
+												</div>
+												<div class="itemCardName">
+													<a href="" style="text-decoration: none; color:white;">Php{{offer.offer_cash}}</a>
+												</div>	
+												<div class="itemCardDet">
+													<div class="itemCardDetUser">
+														From: <a href="" class="itemDetlinks">{{offer.offer_clientfk.user_username}}</a>
+													</div>
+												</div>
+											</div>
+											{% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="display:flex;justify-content:center;align-items:center;">
+                                        The Offer was Rejected<br>
+                                        Reason: {{offer.offer_comment}}
+                                    </div>
+                                </div>
+                                {% endif %}
+							</div>
+						</div>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
